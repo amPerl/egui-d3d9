@@ -245,7 +245,7 @@ fn create_temporary_texture(
                 D3DFMT_A8R8G8B8,
                 D3DPOOL_SYSTEMMEM,
                 &mut temp_texture,
-                std::mem::transmute(&pixel_ptr)
+                std::ptr::null_mut(),
             ),
             "Failed to create a texture"
         );
