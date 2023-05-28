@@ -188,6 +188,7 @@ impl TextureManager {
                     }),
                     "unable to dirty texture"
                 );
+
                 expect!(
                     dev.UpdateTexture(&temp_tex, &texture.handle),
                     "unable to update texture"
@@ -247,7 +248,7 @@ fn create_temporary_texture(
                 &mut temp_texture,
                 std::ptr::null_mut(),
             ),
-            "Failed to create a texture"
+            "unable to create temporary texture"
         );
 
         expect!(temp_texture, "unable to create temporary texture")

@@ -18,7 +18,7 @@ use windows::Win32::{
             WM_LBUTTONDOWN, WM_LBUTTONUP, WM_MBUTTONDBLCLK, WM_MBUTTONDOWN, WM_MBUTTONUP,
             WM_MOUSEHWHEEL, WM_MOUSEMOVE, WM_MOUSEWHEEL, WM_RBUTTONDBLCLK, WM_RBUTTONDOWN,
             WM_RBUTTONUP, WM_SYSKEYDOWN, WM_SYSKEYUP, WM_XBUTTONDBLCLK, WM_XBUTTONDOWN,
-            WM_XBUTTONUP, XBUTTON1, XBUTTON2,
+            WM_XBUTTONUP, XBUTTON1, XBUTTON2, KF_REPEAT,
         },
     },
 };
@@ -239,7 +239,7 @@ impl InputManager {
                         pressed: true,
                         modifiers,
                         key,
-                        repeat: lparam & 0b1111_1111_1111_1111_0000_0000_0000_0000 > 0,
+                        repeat: lparam & (KF_REPEAT as isize) > 0,
                     });
                 }
                 InputResult::Key
@@ -351,9 +351,9 @@ fn get_key_modifiers(msg: u32) -> Modifiers {
 
 fn get_key(wparam: usize) -> Option<Key> {
     match wparam {
-        0x30..=0x39 => unsafe { Some(std::mem::transmute::<_, Key>(wparam as u8 - 0x21)) },
-        0x41..=0x5A => unsafe { Some(std::mem::transmute::<_, Key>(wparam as u8 - 0x28)) },
-        0x70..=0x83 => unsafe { Some(std::mem::transmute::<_, Key>(wparam as u8 - 0x3D)) },
+        0x30..=0x39 => unsafe { Some(std::mem::transmute::<_, Key>(wparam as u8 - 0x1F)) },
+        0x41..=0x5A => unsafe { Some(std::mem::transmute::<_, Key>(wparam as u8 - 0x26)) },
+        0x70..=0x83 => unsafe { Some(std::mem::transmute::<_, Key>(wparam as u8 - 0x3B)) },
         _ => match VIRTUAL_KEY(wparam as u16) {
             VK_DOWN => Some(Key::ArrowDown),
             VK_LEFT => Some(Key::ArrowLeft),
